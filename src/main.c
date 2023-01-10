@@ -177,6 +177,101 @@ void dynamic_led_msg_display()
     }
 }
 
+// 5201314
+void dynamic_led_msg_display_diy()
+{
+    u8 i = 0;
+    for (i = 0; i < 8; ++i)
+    {
+        // 位选 控制哪个LED数码管点亮
+        switch (i)
+        {
+            case 0:
+                LSC = 1;
+                LSB = 1;
+                LSA = 1;
+                break; // 111->7
+            case 1:
+                LSC = 1;
+                LSB = 1;
+                LSA = 0;
+                break; // 110->6
+            case 2:
+                LSC = 1;
+                LSB = 0;
+                LSA = 1;
+                break; // 101->5
+            case 3:
+                LSC = 1;
+                LSB = 0;
+                LSA = 0;
+                break; // 100->4
+            case 4:
+                LSC = 0;
+                LSB = 1;
+                LSA = 1;
+                break; // 011->3
+            case 5:
+                LSC = 0;
+                LSB = 1;
+                LSA = 0;
+                break; // 010->2
+            case 6:
+                LSC = 0;
+                LSB = 0;
+                LSA = 1;
+                break; // 001->1
+            case 7:
+                LSC = 0;
+                LSB = 0;
+                LSA = 0;
+                break; // 000->1
+        }
+        // 数码管段选
+        // [LED8...LED1]分别显示5201314
+        if (i == 0)
+        {
+            // 5
+            SMG_DP_PORT = gsmg_code[5];
+            SMG_DP_PORT = gsmg_code[16];
+        } else if (i == 1)
+        {
+            // 2
+            SMG_DP_PORT = gsmg_code[2];
+            SMG_DP_PORT = gsmg_code[16];
+        } else if (i == 2)
+        {
+            // 0
+            SMG_DP_PORT = gsmg_code[0];
+            SMG_DP_PORT = gsmg_code[16];
+        } else if (i == 3)
+        {
+            // 1
+            SMG_DP_PORT = gsmg_code[1];
+            SMG_DP_PORT = gsmg_code[16];
+        } else if (i == 4)
+        {
+            // 3
+            SMG_DP_PORT = gsmg_code[3];
+            SMG_DP_PORT = gsmg_code[16];
+        } else if (i == 5)
+        {
+            // 1
+            SMG_DP_PORT = gsmg_code[1];
+            SMG_DP_PORT = gsmg_code[16];
+
+        } else if (i == 6)
+        {
+            // 4
+            SMG_DP_PORT = gsmg_code[4];
+            SMG_DP_PORT = gsmg_code[16];
+        } else if (i == 7)
+        {
+            SMG_DP_PORT = gsmg_code[16];
+        }
+    }
+}
+
 int main()
 {
     for (;;)
@@ -185,6 +280,7 @@ int main()
         // horse_race_lamp();
         // static_led_msg_display_0();
         // static_led_msg_display();
-        dynamic_led_msg_display();
+        // dynamic_led_msg_display();
+        dynamic_led_msg_display_diy();
     }
 }
