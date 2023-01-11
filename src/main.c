@@ -1,5 +1,6 @@
 #include "led.h" // led
 #include "led_msg.h" // 数码管
+#include "beep.h" // 蜂鸣器
 
 int main()
 {
@@ -9,6 +10,7 @@ int main()
         // horse_race_lamp(); // LED模块跑马灯效果
         // static_led_msg_display_0(); // 数码管LED8静态显示数码管真值
         // static_led_msg_display(); // 数码管LED8动态显示数码管真值
-        dynamic_led_msg_display(); // 数码管模块多个数码管动态显示
+        // dynamic_led_msg_display(); // 数码管模块多个数码管动态显示
+        beep(3); // 蜂鸣器工作
     }
 }
