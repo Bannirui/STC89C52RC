@@ -177,7 +177,7 @@ void dynamic_led_msg_display()
     }
 }
 
-// 5201314
+// 数码管显示5201314
 void dynamic_led_msg_display_diy()
 {
     u8 i = 0;
@@ -280,7 +280,7 @@ int main()
         // horse_race_lamp();
         // static_led_msg_display_0();
         // static_led_msg_display();
-        // dynamic_led_msg_display();
-        dynamic_led_msg_display_diy();
+        dynamic_led_msg_display();
+        // dynamic_led_msg_display_diy();
     }
 }
