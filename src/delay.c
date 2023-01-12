@@ -3,6 +3,23 @@
 //
 
 #include "delay.h"
+#include <mcs51/8052.h>
+
+/**
+ *        晶振频率=11.0592MHz
+ *        1时钟周期=1/11059200 (s)
+ *        1机器周期=12*时钟周期=12/11059200 (s)
+ *        1ms=0.001s=0.001/(12/11059200) (机器周期) = 921.6 (机器周期)
+ *        13是用于扣减掉执行时产生的额外机器周期
+ */
+#define d_time (65536 - 921 + 13 + 1)
+const unsigned char TL = d_time;
+const unsigned char TH = d_time >> 8;
+
+// 标识定时1ms
+// 0表示没到1ms
+// 1表示到了1ms
+volatile unsigned char flag_4_1ms = 0;
 
 // 时延 20ms为步进值
 // STC89C52RC晶振=11.0592MHz
@@ -13,9 +30,9 @@
 // 16位定时器的溢出值是65536(65535+1后溢出)
 // 给定时器设置一个初值 每次经过一个机器周期就自增1 经过18432个机器周期后达到65536溢出 通过检测TF0的值判定定时器值是否溢出 溢出了说明经过了一个20ms时常
 // 用户需要多久的定时操作就给定对应的20ms的倍数 比如要实现sleep(1s)就传实参50
-void delay_20ms(unsigned char target)
+void delay_20ms(unsigned char twenty_ms_cnt)
 {
-    if (target == 0) return; // 不需要延时
+    if (twenty_ms_cnt == 0) return; // 不需要延时
     unsigned char cnt = 0; // 计数变量记录T0溢出次数
     TMOD = 0x01; // T0为模式1
     TH0 = 0xBB; // T0初值0xBB00
@@ -30,7 +47,81 @@ void delay_20ms(unsigned char target)
             TH0 = 0xBB; // 重新赋值
             TL0 = 0x00;
             cnt++;
-            if (cnt >= target) return;
+            if (cnt >= twenty_ms_cnt) return;
         }
     }
+}
+
+/**
+ * @brief 延时实现
+ *        晶振频率=11.0592MHz
+ *        1时钟周期=1/11059200 (s)
+ *        1机器周期=12*时钟周期=12/11059200 (s)
+ *        10ms=0.01s=0.01/(12/11059200) (机器周期) = 9216 (机器周期)
+ *        每经过一个机器周期计数就自增1 以溢出时抛出异常为临界值 初始值=2^16-1+1-9216=56320
+ *        对应16进制就是0xdc00
+ * @param ten_ms_cnt 以10ms为步进值 需要延时多少个10ms
+ */
+void delay_10ms()
+{
+    TMOD = 0x01; // T0为模式1
+    TH0 = 0xdc;
+    TL0 = 0x00;
+    TR0 = 1; // 启动T0
+    for (;;)
+    {
+        if (TF0 == 1)
+        {
+            // 检测T0到溢出 说明经过了指定的时间
+            TF0 = 0; // T0溢出后清0中断标志
+            TH0 = 0xBB; // 重新赋值
+            TL0 = 0x00;
+            return;
+        }
+    }
+}
+
+void delay_10ms_cnt(unsigned int cnt)
+{
+    while (cnt--)
+    {
+        delay_10ms();
+    }
+}
+
+void delay_1ms()
+{
+    // 定时器T0模式设置
+    TMOD = 0x01;
+    TH0 = TH;
+    TL0 = TL;
+    ET0 = 1; // 使能T0中断
+    EA = 1; // 打开总中断
+    TR0 = 1; // 启动T0定时器
+    while (1)
+    {
+        if (flag_4_1ms == 1)
+        {
+            flag_4_1ms = 0;
+            return;
+        }
+    }
+}
+
+/**
+ * @brief 每发生一次定时器中断 这个函数就被回调一次
+ *        晶振频率=11.0592MHz
+ *        1时钟周期=1/11059200 (s)
+ *        1机器周期=12*时钟周期=12/11059200 (s)
+ *        1ms=0.001s=0.001/(12/11059200) (机器周期) = 921 (机器周期)
+ *        每经过一个机器周期计数就自增1 以溢出时抛出异常为临界值 初始值=2^16-1+1-921=64615
+ *        对应16进制就是0xfc67
+ */
+void TimerIRQ(void) __interrupt (1)
+{
+    // 发生溢出 发生中断
+    // 重新赋值
+    flag_4_1ms = 1;
+    TH0 = TH;
+    TL0 = TL;
 }

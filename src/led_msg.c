@@ -6,7 +6,7 @@
 #include <mcs51/8052.h>
 #include "delay.h"
 
-// 数码管LED8的管脚
+// 数码管LED8的管脚控制段选
 #define SMG_DP_PORT_A P0
 
 // 数码管的段选a-dp连接在74HC245驱动芯片上
@@ -15,18 +15,27 @@
 #define SMG_DP_PORT P0
 
 // 38译码器的输入[P2.2...P2.4] 定义了数码管的位选
+//    P2.4 P2.3 P2.2   十进制  Y编号 LED编号
+//      0    0    0      0     Y0   LED1
+//      0    0    1      1     Y1   LED2
+//      0    1    0      2     Y2   LED3
+//      0    1    1      3     Y3   LED4
+//      1    0    0      4     Y4   LED5
+//      1    0    1      5     Y5   LED6
+//      1    1    0      6     Y6   LED7
+//      1    1    1      7     Y7   LED8   单片机默认起始状态就是高电平1
 #define LSC P2_4
 #define LSB P2_3
 #define LSA P2_2
 
 // 共阴数码管真值表
 // [0..9 A...F 不显示]
-unsigned char gsmg_code[17] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x77, 0x7c, 0x39,
-                               0x5e, 0x79, 0x71, 0x00};
+unsigned char g_smg_code[17] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x77, 0x7c, 0x39,
+                                0x5e, 0x79, 0x71, 0x00};
 
 void static_led_msg_display_0()
 {
-    SMG_DP_PORT_A = gsmg_code[1];
+    SMG_DP_PORT_A = g_smg_code[1]; // 输出段码
 }
 
 void static_led_msg_display()
@@ -34,8 +43,8 @@ void static_led_msg_display()
     // 数码管led8轮流显示[0...9 A...F 不显示]
     for (int i = 0; i < 17; ++i)
     {
-        SMG_DP_PORT_A = gsmg_code[i];
-        delay_20ms(10);
+        SMG_DP_PORT_A = g_smg_code[i];
+        delay_20ms(50);
     }
 }
 
@@ -89,8 +98,8 @@ void dynamic_led_msg_display()
         }
         // 数码管段选
         // [LED8...LED1]分别显示[0...7]
-        SMG_DP_PORT = gsmg_code[i];
-        delay_20ms(0); // 单个数码管显示-不显示延时 只要延时小于人类肉眼的余晖阈值 人类就感知不到刷新
-        SMG_DP_PORT = gsmg_code[16]; // 不显示
+        // 单个数码管显示-不显示延时 只要延时小于人类肉眼的余晖阈值 人类就感知不到刷新
+        SMG_DP_PORT = g_smg_code[i];
+        SMG_DP_PORT = g_smg_code[16]; // 不显示
     }
 }
