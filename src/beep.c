@@ -17,9 +17,9 @@ void beep_one()
     // 控制脉冲频率可以改变音调 即控制高电平-低电平周期
     // 调整1个周期内高电平的时长可以改变音量
     BEEP = 1;
-    delay_10ms_cnt(100);
+    delay_1_ms_cnt(1000);
     BEEP = !BEEP; // 交叉高低电平产生脉冲
-    delay_10ms_cnt(100);
+    delay_1_ms_cnt(100);
 }
 
 void beep(unsigned cnt)

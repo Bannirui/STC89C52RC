@@ -44,7 +44,7 @@ void static_led_msg_display()
     for (int i = 0; i < 17; ++i)
     {
         SMG_DP_PORT_A = g_smg_code[i];
-        delay_10ms_cnt(100);
+        delay_1_ms_cnt(1000);
     }
 }
 
@@ -98,8 +98,11 @@ void dynamic_led_msg_display()
         }
         // 数码管段选
         // [LED8...LED1]分别显示[0...7]
-        // 单个数码管显示-不显示延时 只要延时小于人类肉眼的余晖阈值 人类就感知不到刷新
         SMG_DP_PORT = g_smg_code[i];
+        // 单个数码管显示-不显示延时 只要延时小于人类肉眼的余晖阈值 人类就感知不到刷新
+        // 间隔的两个lED之间的延时 8个LED灯总共有7个延时 总延时要在余晖效应之间 控制在20ms内
+        // 如果不设置延时 那么数码管整体显示的亮度就会偏暗
+        delay_1_ms_cnt(1);
         SMG_DP_PORT = g_smg_code[16]; // 不显示 消影作用 消除下一个数码管段选对上一个数码管显示的残影影响
     }
 }

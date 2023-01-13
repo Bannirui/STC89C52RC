@@ -11,6 +11,6 @@ int main()
         // beep(3); // 蜂鸣器工作
         // static_led_msg_display_0(); // 数码管LED8静态显示数码管真值
         // static_led_msg_display(); // 数码管LED8动态显示数码管真值
-        // dynamic_led_msg_display(); // 数码管模块多个数码管动态显示
+        dynamic_led_msg_display(); // 数码管模块多个数码管动态显示
     }
 }

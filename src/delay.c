@@ -16,10 +16,10 @@
  *        定时器T0方式1的计数阈值=2^16-1+1=65536
  * @param ten_ms_cnt 以10ms为步进值 需要延时多少个10ms
  */
-void delay_10ms()
+void delay_1_ms()
 {
     TMOD = 0x01; // 设置T0定时器为模式1
-    int base_time = (65536 - 9216); // 意味着定时器发生9216次自增后就会溢出 将TF0设置为1 我们就通过检测TF0值判定计时
+    int base_time = (65536 - 921); // 意味着定时器发生一定次数自增后就会溢出 将TF0设置为1 我们就通过检测TF0值判定计时
     unsigned char tl = base_time; // base_time是int 32位 低8位
     unsigned char th = base_time >> 8; // base_time的次8位
     TH0 = th;
@@ -39,10 +39,10 @@ void delay_10ms()
     }
 }
 
-void delay_10ms_cnt(unsigned int cnt)
+void delay_1_ms_cnt(unsigned int cnt)
 {
     while (cnt--)
     {
-        delay_10ms();
+        delay_1_ms();
     }
 }

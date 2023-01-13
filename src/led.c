@@ -26,9 +26,9 @@ void off_LED1()
 void on_off_led1()
 {
     on_LED1();
-    delay_10ms_cnt(100);
+    delay_1_ms_cnt(1000);
     off_LED1();
-    delay_10ms_cnt(100);
+    delay_1_ms_cnt(1000);
 }
 
 // [led1...led8]跑马灯
@@ -50,6 +50,6 @@ void horse_race_lamp()
         LED_PORT = ~(0x01 << i);
         // 如果没有能力通过移位操作 可以粗暴的枚举端口输出电平状态状态
         // LED_PORT = states[i];
-        delay_10ms_cnt(40);
+        delay_1_ms_cnt(400);
     }
 }
