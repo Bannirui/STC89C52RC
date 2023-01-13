@@ -100,6 +100,6 @@ void dynamic_led_msg_display()
         // [LED8...LED1]分别显示[0...7]
         // 单个数码管显示-不显示延时 只要延时小于人类肉眼的余晖阈值 人类就感知不到刷新
         SMG_DP_PORT = g_smg_code[i];
-        SMG_DP_PORT = g_smg_code[16]; // 不显示
+        SMG_DP_PORT = g_smg_code[16]; // 不显示 消影作用 消除下一个数码管段选对上一个数码管显示的残影影响
     }
 }
