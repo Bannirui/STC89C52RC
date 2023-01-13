@@ -44,7 +44,7 @@ void static_led_msg_display()
     for (int i = 0; i < 17; ++i)
     {
         SMG_DP_PORT_A = g_smg_code[i];
-        delay_20ms(50);
+        delay_10ms_cnt(100);
     }
 }
 
