@@ -28,14 +28,9 @@
 #define LSB P2_3
 #define LSA P2_2
 
-// 共阴数码管真值表
-// [0..9 A...F 不显示]
-unsigned char g_smg_code[17] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x77, 0x7c, 0x39,
-                                0x5e, 0x79, 0x71, 0x00};
-
-void static_led_msg_display_0()
+void static_led_msg_display_0(unsigned char msg)
 {
-    SMG_DP_PORT_A = g_smg_code[1]; // 输出段码
+    SMG_DP_PORT_A = msg; // 输出段码
 }
 
 void static_led_msg_display()
