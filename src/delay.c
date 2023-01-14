@@ -6,6 +6,38 @@
 #include <mcs51/8052.h>
 
 /**
+ * @brief 延时1us
+ *        1(us)=0.000001(s)=0.000001/(12/11059200)(机器周期)=0.9216(机器周期)
+ */
+void delay_1_us()
+{
+    TMOD = 0x001;
+    int base_time = (65536 - 1);
+    unsigned char tl = base_time;
+    unsigned char th = base_time >> 8;
+    TH0 = th;
+    TL0 = tl;
+    while (1)
+    {
+        if (TF0 == 1)
+        {
+            TF0 = 0;
+            TH0 = th;
+            TL0 = tl;
+            return;
+        }
+    }
+}
+
+void delay_1_us_cnt(unsigned int cnt)
+{
+    while (cnt--)
+    {
+        delay_1_us();
+    }
+}
+
+/**
  * @brief 延时实现
  *        晶振频率=11.0592MHz
  *        1时钟周期=1/11059200 (s)

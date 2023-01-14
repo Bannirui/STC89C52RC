@@ -52,8 +52,8 @@ unsigned char key_status_scan(unsigned char mode)
     } else
     {
         key = 1;
-        return KEY_UN_PRESS;
     }
+    return KEY_UN_PRESS;
 }
 
 void switch_ctl_led()
