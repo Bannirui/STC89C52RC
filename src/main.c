@@ -4,9 +4,11 @@
 #include "switch.h" // 独立按键开关
 #include "switch_matrix.h" // 按键矩阵
 #include "led_matrix.h" // led点阵
+#include "motor.h" // 电机
 
 int main()
 {
+    run_dc_motor(); // 直流电机
     for (;;)
     {
         // on_off_led1(); // LED模块LED1点亮-熄灭
