@@ -23,3 +23,25 @@ void scroll_led_matrix_up_2_down()
         delay_1_ms_cnt(30); // 大于余晖效应
     }
 }
+
+void on_left_top()
+{
+    LED_MATRIX_COL_PORT = 0x7f; // 使P0口输出
+    hc_595_write_data(0x80); // 芯片SER输入
+}
+
+// 点阵上显示0 行上电平输出 列上电平输出
+unsigned char g_img_0_row_output[] = {0x00, 0x3c, 0x42, 0x42, 0x42, 0x42, 0x3c, 0x00};
+unsigned char g_img_0_col_output[] = {0xff, 0xbf, 0xdf, 0xef, 0xf7, 0xfb, 0xfd, 0xff};
+
+void display_img_0()
+{
+    // 扫描8列
+    for (int i = 0; i < 8; ++i)
+    {
+        LED_MATRIX_COL_PORT = g_img_0_col_output[i]; // 使P0端口输出
+        hc_595_write_data(g_img_0_row_output[i]); // 是595芯片输出
+        delay_1_ms_cnt(1); // 延时保证稳定显示
+        hc_595_write_data(0x00); // 消影
+    }
+}
