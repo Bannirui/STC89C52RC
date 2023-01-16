@@ -11,3 +11,6 @@
 - [X] [按键矩阵](key_matrix)
 - [X] [直流电机](dc_motor)
 - [ ] [led点阵](led_matrix)
+- [X] [外部中断](interrupt)
+- [X] [定时器](timer)
+- [X] [串口通信](uart)
