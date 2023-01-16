@@ -18,13 +18,12 @@ void scroll_led_matrix_up_2_down()
     LED_MATRIX_COL_PORT = 0x00; // 使P0端口输入低电平 led的阴极连接着P0端口
     // led阳极的8个行上的引脚连接着74HC595芯片的输出 从上之下为高位->低位
     // 芯片OE使能为低电平 连接着J24端子 让J24端子的GND和OE直连使芯片工作
-    hc_595_write_data(g_74hc595_ser_in[1]);
-    // for (int i = 0; i < 8; ++i)
-    // {
-    //     hc_595_write_data(0x00); // 消影 关闭led点阵
-    //     hc_595_write_data(g_74hc595_ser_in[i]); // 通过芯片串转并输出某一行的高电平 点亮行
-    //     delay_1_ms_cnt(1000); // 大于余晖效应
-    // }
+    for (int i = 0; i < 8; ++i)
+    {
+        hc_595_write_data(0x00); // 消影 关闭led点阵
+        hc_595_write_data(g_74hc595_ser_in[i]); // 通过芯片串转并输出某一行的高电平 点亮行
+        delay_1_ms_cnt(2000); // 大于余晖效应
+    }
 }
 
 void on_left_top()
@@ -43,7 +42,7 @@ void display_img_0()
     for (int i = 0; i < 8; ++i)
     {
         LED_MATRIX_COL_PORT = g_img_0_col_output[i]; // 使P0端口输出
-        hc_595_write_data(g_img_0_row_output[i]); // 是595芯片输出
+        hc_595_write_data(g_img_0_row_output[i]); // 使595芯片输出
         delay_1_ms_cnt(1); // 延时保证稳定显示
         hc_595_write_data(0x00); // 消影
     }
