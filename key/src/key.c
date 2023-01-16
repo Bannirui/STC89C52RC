@@ -2,7 +2,7 @@
 // Created by dingrui on 2023/1/14.
 //
 
-#include "switch.h"
+#include "key.h"
 #include <mcs51/8052.h>
 #include "delay.h"
 
