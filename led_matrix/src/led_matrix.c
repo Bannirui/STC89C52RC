@@ -15,14 +15,17 @@ unsigned char g_74hc595_ser_in[8] = {0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0
 
 void scroll_led_matrix_up_2_down()
 {
+    // FIXME: 2023/1/16 存疑的地方 为啥要前置两个操作 1.将点阵上led的阴极先给上高电平让其不亮 2.然后必须延时
+    LED_MATRIX_COL_PORT = 0xff; // 先让P0端口输出高电平 LED点阵不亮
+    delay_1_ms_cnt(1);
     LED_MATRIX_COL_PORT = 0x00; // 使P0端口输入低电平 led的阴极连接着P0端口
-    // led阳极的8个行上的引脚连接着74HC595芯片的输出 从上之下为高位->低位
+    // led阳极的8个行上的引脚连接着74HC595芯片的输出 从上至下为高位->低位
     // 芯片OE使能为低电平 连接着J24端子 让J24端子的GND和OE直连使芯片工作
     for (int i = 0; i < 8; ++i)
     {
         hc_595_write_data(0x00); // 消影 关闭led点阵
         hc_595_write_data(g_74hc595_ser_in[i]); // 通过芯片串转并输出某一行的高电平 点亮行
-        delay_1_ms_cnt(2000); // 大于余晖效应
+        delay_1_ms_cnt(1000); // 大于余晖效应
     }
 }
 
