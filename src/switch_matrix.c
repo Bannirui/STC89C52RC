@@ -44,12 +44,11 @@ unsigned char row_col_scan()
      */
     unsigned char ans = 0; // 按键编号
 
-    KEY_MATRIX_PORT = 0xf7; // 第1列输出为低电平 1111 0111
+    KEY_MATRIX_PORT = 0xf7; // 使第1列输出为低电平 1111 0111
     if (KEY_MATRIX_PORT != 0xf7)
     {
         // 第1列上有按键被按下
-        // 消抖
-        delay_1_ms_cnt(10);
+        delay_1_ms_cnt(10); // 消抖
         switch (KEY_MATRIX_PORT)
         {
             case 0x77: // 第1行的按键被按下 0111 0111
@@ -68,12 +67,11 @@ unsigned char row_col_scan()
         while (KEY_MATRIX_PORT != 0xf7); // 等待按键松开
     }
 
-    KEY_MATRIX_PORT = 0xfb; // 第2列输出为低电平 1111 1011
+    KEY_MATRIX_PORT = 0xfb; // 使第2列输出为低电平 1111 1011
     if (KEY_MATRIX_PORT != 0xfb)
     {
         // 第2列上有按键被按下
-        // 消抖
-        delay_1_ms_cnt(10);
+        delay_1_ms_cnt(10); // 消抖
         switch (KEY_MATRIX_PORT)
         {
             case 0x7b: // 第1行的按键被按下 0111 1011
@@ -92,12 +90,11 @@ unsigned char row_col_scan()
         while (KEY_MATRIX_PORT != 0xfb); // 等待按键松开
     }
 
-    KEY_MATRIX_PORT = 0xfd; // 第3列输出为低电平 1111 1101
+    KEY_MATRIX_PORT = 0xfd; // 使第3列输出为低电平 1111 1101
     if (KEY_MATRIX_PORT != 0xfd)
     {
         // 第3列上有按键被按下
-        // 消抖
-        delay_1_ms_cnt(10);
+        delay_1_ms_cnt(10); // 消抖
         switch (KEY_MATRIX_PORT)
         {
             case 0x7d: // 第1行的按键被按下 0111 1101
@@ -116,24 +113,23 @@ unsigned char row_col_scan()
         while (KEY_MATRIX_PORT != 0xfd); // 等待按键松开
     }
 
-    KEY_MATRIX_PORT = 0xfe; // 第1列输出为低电平 1111 1110
+    KEY_MATRIX_PORT = 0xfe; // 使第4列输出为低电平 1111 1110
     if (KEY_MATRIX_PORT != 0xfe)
     {
-        // 第1列上有按键被按下
-        // 消抖
-        delay_1_ms_cnt(10);
+        // 第4列上有按键被按下
+        delay_1_ms_cnt(10); // 消抖
         switch (KEY_MATRIX_PORT)
         {
-            case 0x77: // 第1行的按键被按下 0111 1110
+            case 0x7e: // 第1行的按键被按下 0111 1110
                 ans = 4; // 第1行第4列编号S4
                 break;
-            case 0xb7: // 第2行的按键被按下 1011 1110
+            case 0xbe: // 第2行的按键被按下 1011 1110
                 ans = 8; // 第2行第4列编号S8
                 break;
-            case 0xd7: // 第3行的按键被按下 1101 1110
+            case 0xde: // 第3行的按键被按下 1101 1110
                 ans = 12; // 第3行第4列编号S12
                 break;
-            case 0xe7: // 第4行的按键被按下 1110 1110
+            case 0xee: // 第4行的按键被按下 1110 1110
                 ans = 16; // 第4行第4列编号S16
                 break;
         }
@@ -198,8 +194,8 @@ void print_pressed_key_no()
 {
     // 按键矩阵中被按下的按键编号
     unsigned char key_no = 0;
-    // key_no = row_col_scan(); // 行列扫描
-    key_no = flip_scan(); // 线性翻转
+    key_no = row_col_scan(); // 行列扫描
+    // key_no = flip_scan(); // 线性翻转
     if (key_no == 0) return;
     static_led_msg_display_0(g_smg_code[key_no - 1]); // 数码管SMG1第一个数码管显示内容
 }
