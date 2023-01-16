@@ -194,8 +194,8 @@ void print_pressed_key_no()
 {
     // 按键矩阵中被按下的按键编号
     unsigned char key_no = 0;
-    key_no = row_col_scan(); // 行列扫描
-    // key_no = flip_scan(); // 线性翻转
+    // key_no = row_col_scan(); // 行列扫描
+    key_no = flip_scan(); // 线性翻转
     if (key_no == 0) return;
     static_led_msg_display_0(g_smg_code[key_no - 1]); // 数码管SMG1第一个数码管显示内容
 }
