@@ -15,7 +15,7 @@
  * 1 行列式扫描
  * 2 线翻转法
 */
-#include "switch_matrix.h"
+#include "key_matrix.h"
 #include <mcs51/8052.h>
 #include "delay.h"
 #include "led_msg.h"
