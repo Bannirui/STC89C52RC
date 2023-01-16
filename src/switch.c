@@ -29,6 +29,10 @@
 
 /**
  * @brief [K1...K4]4个独立按键状态检测
+ *        按键2个引脚一端连着P3端口 一端连着GND
+ *        P3端口内部有上拉电阻 也就意味着默认情况下P3输出为高电平
+ *        按键如果被按下 整条电路导通 P3的输出为低电平
+ *        按键如果没按下 整条电路断开 P3的输出为高电平
  * @param mode 检测模式 mode为1标识可以连续检测 mode为0标识只能单次检测
  * @return K1按下返回K1的指定值
  *         K2按下返回K2的指定值
@@ -59,7 +63,7 @@ unsigned char key_status_scan(unsigned char mode)
 void switch_ctl_led()
 {
     unsigned char switch_status = key_status_scan(0);
-    // LED连接着P2端口 其内部有上拉电阻 即默认输出高电平 因此检测到开关被按下 输出低电平即可点亮led
+    // 8个LED共阳极连接着P2端口 其内部有上拉电阻 即默认输出高电平 因此检测到开关被按下 给LED的阴极输出低电平即可点亮led
     if (switch_status == KEY1_PRESS) LED1 = !LED1; // K1按下 点亮D1
     if (switch_status == KEY2_PRESS) LED2 = !LED2; // K2按下 点亮D2
     if (switch_status == KEY3_PRESS) LED3 = !LED3; // K3按下 点亮D3
