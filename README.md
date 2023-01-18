@@ -14,3 +14,4 @@
 - [X] [外部中断](interrupt)
 - [X] [定时器](timer)
 - [X] [串口通信](uart)
+- [X] [I2C协议](I2C)
